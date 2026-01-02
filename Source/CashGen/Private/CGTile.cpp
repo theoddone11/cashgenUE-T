@@ -30,6 +30,20 @@ ACGTile::~ACGTile()
 	}
 }
 
+TArray<UProceduralMeshComponent*> ACGTile::GetMeshComponents()
+{
+	TArray<UProceduralMeshComponent*> ProcMeshComponents;
+	if (MeshComponents.Num() > 0)
+	{
+		
+		for (TTuple<uint8, UProceduralMeshComponent*> MeshTuple : MeshComponents){
+			UProceduralMeshComponent* ProcMesh =  MeshTuple.Get<1>();
+			ProcMeshComponents.Add(ProcMesh);
+		}
+	}
+	return ProcMeshComponents;
+}
+
 bool ACGTile::TickTransition(float DeltaSeconds)
 {
 	for (auto& lod : LODStatus)
@@ -286,6 +300,7 @@ void ACGTile::UpdateMesh(uint8 aLOD, bool aIsInPlaceUpdate,
 			{
 				MeshComponents[i]->UpdateMeshSection(0, aPositions, aNormals, aUV0s, aColours, aTangents);
 				LODStatus.Add(i, ELODStatus::TRANSITION);
+				MeshComponents[i]->ComponentTags.Add(FName("Landscape"));
 			}
 
 			MeshComponents[i]->SetVisibility(true);

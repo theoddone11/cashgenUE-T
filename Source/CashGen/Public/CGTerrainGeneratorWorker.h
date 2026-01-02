@@ -17,7 +17,8 @@ public:
 	virtual uint32 Run();
 	virtual void Stop();
 	virtual void Exit();
-
+	TArray<FVector> GetMeshSurface() const;
+	FCGMeshData* GetMeshData() const;
 private:
 	ACGTerrainManager& pTerrainManager;
 	FCGTerrainConfig& pTerrainConfig;
@@ -29,19 +30,19 @@ private:
 
 	bool IsThreadFinished;
 
-	void prepMaps();
+	void prepMaps() const;
 	void ProcessTerrainMap();
-	void AddDepositionToHeightMap();
+	void AddDepositionToHeightMap() const;
 	void ProcessSingleDropletErosion();
 	void ProcessPerBlockGeometry();
 	void ProcessPerVertexTasks();
-	void ProcessSkirtGeometry();
+	void ProcessSkirtGeometry() const;
 	TCGBorrowedObject<FCGMeshData> BorrowMeshData();
 
 	void erodeHeightMapAtIndex(int32 aX, int32 aY, float aAmount);
-	void GetNormalFromHeightMapForVertex(const int32& vertexX, const int32& vertexY, FVector& aOutNormal); // , FVector& aOutTangent);
+	void GetNormalFromHeightMapForVertex(const int32& vertexX, const int32& vertexY, FVector& aOutNormal) const; // , FVector& aOutTangent);
 
-	void UpdateOneBlockGeometry(const int32& aX, const int32& aY, int32& aVertCounter, int32& triCounter);
+	void UpdateOneBlockGeometry(const int32& aX, const int32& aY, int32& aVertCounter, int32& triCounter) const;
 
-	int32 GetNumberOfNoiseSamplePoints();
+	int32 GetNumberOfNoiseSamplePoints() const;
 };
