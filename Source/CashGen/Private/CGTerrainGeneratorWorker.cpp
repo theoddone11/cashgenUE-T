@@ -102,7 +102,20 @@ void FCGTerrainGeneratorWorker::Exit()
 {
 }
 
-void FCGTerrainGeneratorWorker::prepMaps()
+TArray<FVector> FCGTerrainGeneratorWorker::GetMeshSurface() const{
+	return pMeshData->MyPositions;
+}
+
+FCGMeshData* FCGTerrainGeneratorWorker::GetMeshData() const
+{
+	if (pMeshData)
+	{
+		return pMeshData;
+	}
+	else return nullptr;
+}
+
+void FCGTerrainGeneratorWorker::prepMaps() const
 {
 	// TODO : VERTEX COLORS
 	for (int32 i = 0; i < pMeshData->MyColours.Num(); ++i)
@@ -178,7 +191,7 @@ void FCGTerrainGeneratorWorker::ProcessTerrainMap()
 	}
 }
 
-void FCGTerrainGeneratorWorker::AddDepositionToHeightMap()
+void FCGTerrainGeneratorWorker::AddDepositionToHeightMap() const
 {
 	int32 index = 0;
 	for (float& heightPoint : pMeshData->HeightMap)
@@ -334,7 +347,7 @@ void FCGTerrainGeneratorWorker::ProcessPerVertexTasks()
 }
 
 // Generates the 'skirt' geometry that falls down from the edges of each tile
-void FCGTerrainGeneratorWorker::ProcessSkirtGeometry()
+void FCGTerrainGeneratorWorker::ProcessSkirtGeometry() const
 {
 	// Going to do this the simple way, keep code easy to understand!
 
@@ -484,7 +497,8 @@ void FCGTerrainGeneratorWorker::ProcessSkirtGeometry()
 	}
 }
 
-void FCGTerrainGeneratorWorker::GetNormalFromHeightMapForVertex(const int32& vertexX, const int32& vertexY, FVector& aOutNormal) //, FVector& aOutTangent)
+void FCGTerrainGeneratorWorker::GetNormalFromHeightMapForVertex(const int32& vertexX, const int32& vertexY, FVector& aOutNormal) const
+//, FVector& aOutTangent)
 {
 	FVector result;
 
@@ -523,7 +537,7 @@ void FCGTerrainGeneratorWorker::GetNormalFromHeightMapForVertex(const int32& ver
 	//aOutTangent = FRuntimeMeshTangent(left.GetSafeNormal(), false);
 }
 
-void FCGTerrainGeneratorWorker::UpdateOneBlockGeometry(const int32& aX, const int32& aY, int32& aVertCounter, int32& triCounter)
+void FCGTerrainGeneratorWorker::UpdateOneBlockGeometry(const int32& aX, const int32& aY, int32& aVertCounter, int32& triCounter) const
 {
 	int32 thisX = aX;
 	int32 thisY = aY;
@@ -552,7 +566,7 @@ void FCGTerrainGeneratorWorker::UpdateOneBlockGeometry(const int32& aX, const in
 	pMeshData->MyPositions[(thisX + 1) + ((thisY + 1) * rowLength)] = FVector((blockX + thisX + 1) * exUnitSize, (blockY + thisY + 1) * exUnitSize, pMeshData->HeightMap[(heightMapX + 1) + ((heightMapY + 1) * heightMapRowLength)] * ampl) - heightMapToWorldOffset;
 }
 
-int32 FCGTerrainGeneratorWorker::GetNumberOfNoiseSamplePoints()
+int32 FCGTerrainGeneratorWorker::GetNumberOfNoiseSamplePoints() const
 {
 	return workLOD == 0 ? pTerrainConfig.TileXUnits + 3 : (pTerrainConfig.TileXUnits / (pTerrainConfig.LODs[workLOD].ResolutionDivisor)) + 3;
 }

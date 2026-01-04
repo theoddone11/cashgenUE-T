@@ -13,6 +13,8 @@ ACGTile::ACGTile()
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("RootComponent"));
 	RootComponent = SphereComponent;
 
+	Tags.Add(FName("Landscape")); // Add a new tag
+	
 	CurrentLOD = 10;
 	PreviousLOD = 10;
 
@@ -26,6 +28,20 @@ ACGTile::~ACGTile()
 		delete myRegion;
 		myRegion = nullptr;
 	}
+}
+
+TArray<UProceduralMeshComponent*> ACGTile::GetMeshComponents()
+{
+	TArray<UProceduralMeshComponent*> ProcMeshComponents;
+	if (MeshComponents.Num() > 0)
+	{
+		
+		for (TTuple<uint8, UProceduralMeshComponent*> MeshTuple : MeshComponents){
+			UProceduralMeshComponent* ProcMesh =  MeshTuple.Get<1>();
+			ProcMeshComponents.Add(ProcMesh);
+		}
+	}
+	return ProcMeshComponents;
 }
 
 bool ACGTile::TickTransition(float DeltaSeconds)
@@ -247,7 +263,7 @@ bool ACGTile::CreateWaterMesh()
 		myIndices.Emplace(0);
 
 		MeshComponents[0]->CreateMeshSection(1, myPositions, myIndices, myNormals, myUV0, TArray<FColor>(), myTangents, true);
-
+		MeshComponents[0]->ComponentTags.Add(FName("Water"));
 		myWaterMaterialInstance = UMaterialInstanceDynamic::Create(TerrainConfigMaster->WaterMaterialInstance, this);
 		MeshComponents[0]->SetMaterial(1, myWaterMaterialInstance);
 
@@ -278,11 +294,13 @@ void ACGTile::UpdateMesh(uint8 aLOD, bool aIsInPlaceUpdate,
 				MeshComponents[i]->CreateMeshSection(0, aPositions, aTriangles, aNormals, aUV0s, aColours, aTangents, TerrainConfigMaster->LODs[aLOD].isCollisionEnabled);
 				MeshComponents[i]->RegisterComponent();
 				LODStatus.Add(i, ELODStatus::TRANSITION);
+				MeshComponents[i]->ComponentTags.Add(FName("Landscape"));
 			}
 			else
 			{
 				MeshComponents[i]->UpdateMeshSection(0, aPositions, aNormals, aUV0s, aColours, aTangents);
 				LODStatus.Add(i, ELODStatus::TRANSITION);
+				MeshComponents[i]->ComponentTags.Add(FName("Landscape"));
 			}
 
 			MeshComponents[i]->SetVisibility(true);
