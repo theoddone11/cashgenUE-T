@@ -30,18 +30,57 @@ ACGTile::~ACGTile()
 	}
 }
 
-TArray<UProceduralMeshComponent*> ACGTile::GetMeshComponents()
+int32 ACGTile::GetNumMeshes() const
 {
-	TArray<UProceduralMeshComponent*> ProcMeshComponents;
+	return MeshComponents.Num();
+}
+
+TArray<FTransform> ACGTile::GetMeshTransforms()
+{
+	TArray<FTransform> Transforms;
 	if (MeshComponents.Num() > 0)
 	{
 		
 		for (TTuple<uint8, UProceduralMeshComponent*> MeshTuple : MeshComponents){
-			UProceduralMeshComponent* ProcMesh =  MeshTuple.Get<1>();
-			ProcMeshComponents.Add(ProcMesh);
+			UProceduralMeshComponent* ProcMesh = MeshTuple.Get<1>();
+			int32 NSections = ProcMesh->GetNumSections();
+			for (int32 j = 0; j < NSections; j++) {
+				int32 VtxLen = ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer.Num();
+				for (int32 k = 0; k < VtxLen; k++) {
+					FVector Pos = ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer[k].Position;
+					FVector Normal =  ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer[k].Normal;
+					FTransform OutTransform;
+					OutTransform.SetLocation(Pos);
+					OutTransform.SetRotation(Normal.ToOrientationQuat());
+					OutTransform.SetScale3D(FVector(1, 1, 1));
+					Transforms.Add(OutTransform);
+				}
+			}
+			
 		}
 	}
-	return ProcMeshComponents;
+	return Transforms;
+	
+	/*
+	for (auto TileBlock : TileMeshes) {
+		int32 Sections = TileBlock->GetNumSections();
+		UE_LOG(LogTemp, Log, TEXT("Found procedural mesh sections"));
+		for (int32 j = 0; j < Sections; j++) {
+			FProcMeshSection* PSection = TileBlock->GetProcMeshSection(j);
+			//=// ProcMesh->GetProcMeshSection(j);
+			for (FProcMeshVertex Vtx :  TileBlock->GetProcMeshSection(j)->ProcVertexBuffer) {
+				FVector Pos = Vtx.Position;
+				FVector Normal = Vtx.Normal;
+				FTransform OutTransform;
+				OutTransform.SetLocation(Pos);
+				OutTransform.SetRotation(Normal.ToOrientationQuat());
+				OutTransform.SetScale3D(FVector(1, 1, 1));
+				OutputPoints.Add(FPCGPoint(OutTransform, 1.f, TSEED));
+			}
+		}
+	}
+	*/
+	
 }
 
 bool ACGTile::TickTransition(float DeltaSeconds)

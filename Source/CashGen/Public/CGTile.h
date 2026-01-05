@@ -56,8 +56,8 @@ public:
 	~ACGTile();
 
 public:
-	
-	TArray<UProceduralMeshComponent*> GetMeshComponents();
+	int32 GetNumMeshes() const;
+	TArray<FTransform> GetMeshTransforms();
 	bool TickTransition(float DeltaSeconds);
 
 	virtual void BeginPlay() override;
