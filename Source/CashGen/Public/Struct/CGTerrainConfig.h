@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "CashGen/Public/Struct/CGLODConfig.h"
@@ -71,8 +72,8 @@ struct FCGTerrainConfig
 	float DropletErosionFloor = 0.0f;
 
 	/** Material for the terrain mesh */
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CashGen|Rendering")
-	//UMaterial* TerrainMaterial;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CashGen|Rendering")
+	UMaterial* TerrainMaterial;
 	/** Material for the water mesh (will be instanced)*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CashGen|Rendering")
 	UMaterialInstance* WaterMaterialInstance = nullptr;
@@ -107,3 +108,5 @@ struct FCGTerrainConfig
 
 	FVector TileOffset = FVector::ZeroVector;
 };
+
+
