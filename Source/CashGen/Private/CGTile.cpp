@@ -67,7 +67,7 @@ TArray<FTransform> ACGTile::GetMeshTransforms()
 		UE_LOG(LogTemp, Log, TEXT("Found procedural mesh sections"));
 		for (int32 j = 0; j < Sections; j++) {
 			FProcMeshSection* PSection = TileBlock->GetProcMeshSection(j);
-			//=// ProcMesh->GetProcMeshSection(j);
+			= ProcMesh->GetProcMeshSection(j);
 			for (FProcMeshVertex Vtx :  TileBlock->GetProcMeshSection(j)->ProcVertexBuffer) {
 				FVector Pos = Vtx.Position;
 				FVector Normal = Vtx.Normal;

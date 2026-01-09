@@ -123,7 +123,7 @@ void UCGTerrainTrackerComponent::TickComponent(float DeltaTime, ELevelTick TickT
 				&& hitResult.Location.Z > 10.0f)
 			{
 
-				GetOwner()->SetActorLocation(hitResult.Location + FVector(0.0f, 0.0f, 10.0f));
+				GetOwner()->SetActorLocation(hitResult.Location + FVector(0.0f, 0.0f, TeleportToSurface_Z));
 				ACharacter* character = Cast<ACharacter>(GetOwner());
 				if (character)
 				{

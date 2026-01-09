@@ -18,6 +18,7 @@ ACGTerrainManager::ACGTerrainManager()
 
 	MyWaterMeshComponent = CreateDefaultSubobject<UHierarchicalInstancedStaticMeshComponent>(TEXT("MyWaterComponent"));
 	MyWaterMeshComponent->SetupAttachment(RootComponent);
+	
 }
 
 ACGTerrainManager::~ACGTerrainManager()
@@ -310,8 +311,9 @@ void ACGTerrainManager::AddActorToTrack(AActor* aPawn)
 {
 	myTrackedActors.Add(aPawn);
 	FCGIntVector2 pawnSector = GetSector(aPawn->GetActorLocation());
+	FString CharZDebug = *aPawn->GetName().Append(pawnSector.ToString());
 	myActorLocationMap.Add(aPawn, pawnSector);
-
+	UE_LOG(LogTemp, Warning, TEXT("*Survival* CGTerrainManager - Adding actor to track %s"), *CharZDebug)
 	ProcessTilesForActor(aPawn);
 }
 

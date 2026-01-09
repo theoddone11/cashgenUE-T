@@ -19,7 +19,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cashgen", meta = (ClampMin = "10.0", ClampMax = "9999.99"))
+	float TeleportToSurface_Z = 100.0f;
 
 	/* Sets actor invisible until inital terrain generation is complete */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Cashgen")
