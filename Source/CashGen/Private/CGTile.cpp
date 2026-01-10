@@ -30,57 +30,29 @@ ACGTile::~ACGTile()
 	}
 }
 
-int32 ACGTile::GetNumMeshes() const
+int32 ACGTile::GetNumMeshTransforms() const
 {
-	return MeshComponents.Num();
+	return MeshTransforms.Num();
 }
 
-TArray<FTransform> ACGTile::GetMeshTransforms()
-{
-	TArray<FTransform> Transforms;
-	if (MeshComponents.Num() > 0)
-	{
-		
-		for (TTuple<uint8, UProceduralMeshComponent*> MeshTuple : MeshComponents){
-			UProceduralMeshComponent* ProcMesh = MeshTuple.Get<1>();
-			int32 NSections = ProcMesh->GetNumSections();
-			for (int32 j = 0; j < NSections; j++) {
-				int32 VtxLen = ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer.Num();
-				for (int32 k = 0; k < VtxLen; k++) {
-					FVector Pos = ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer[k].Position;
-					FVector Normal =  ProcMesh->GetProcMeshSection(j)->ProcVertexBuffer[k].Normal;
-					FTransform OutTransform;
-					OutTransform.SetLocation(Pos);
-					OutTransform.SetRotation(Normal.ToOrientationQuat());
-					OutTransform.SetScale3D(FVector(1, 1, 1));
-					Transforms.Add(OutTransform);
-				}
-			}
-			
+void ACGTile::SetMeshTransforms(const TArray<FVector>& Vertices, const TArray<FVector>& Normals){
+	int32 VtxNum = Vertices.Num();
+	FVector WorldLocation = GetActorLocation();
+	if ((VtxNum > 0) && (Normals.Num() == VtxNum)){
+		for (int32 w = 0; w < VtxNum; w++) {
+			FVector Pos = Vertices[w] + WorldLocation;
+			FVector Normal =  Normals[w] + FVector(0.0f, 0.0f, 1.0f);
+			FTransform OutTransform = FTransform(Normal.ToOrientationQuat(),Pos,  FVector(1, 1, 1));
+			MeshTransforms.Add(OutTransform);
 		}
 	}
-	return Transforms;
-	
-	/*
-	for (auto TileBlock : TileMeshes) {
-		int32 Sections = TileBlock->GetNumSections();
-		UE_LOG(LogTemp, Log, TEXT("Found procedural mesh sections"));
-		for (int32 j = 0; j < Sections; j++) {
-			FProcMeshSection* PSection = TileBlock->GetProcMeshSection(j);
-			= ProcMesh->GetProcMeshSection(j);
-			for (FProcMeshVertex Vtx :  TileBlock->GetProcMeshSection(j)->ProcVertexBuffer) {
-				FVector Pos = Vtx.Position;
-				FVector Normal = Vtx.Normal;
-				FTransform OutTransform;
-				OutTransform.SetLocation(Pos);
-				OutTransform.SetRotation(Normal.ToOrientationQuat());
-				OutTransform.SetScale3D(FVector(1, 1, 1));
-				OutputPoints.Add(FPCGPoint(OutTransform, 1.f, TSEED));
-			}
-		}
+}
+
+TArray<FTransform> ACGTile::GetMeshTransforms(){
+	if (MeshTransforms.Num() > 0){
+		return MeshTransforms;
 	}
-	*/
-	
+	else return TArray<FTransform>();
 }
 
 bool ACGTile::TickTransition(float DeltaSeconds)
@@ -323,7 +295,7 @@ void ACGTile::UpdateMesh(uint8 aLOD, bool aIsInPlaceUpdate,
 	PreviousLOD = CurrentLOD;
 	CurrentLOD = aLOD;
 	LODTransitionOpacity = 1.0f;
-
+	SetMeshTransforms(aPositions, aNormals);
 	for (int32 i = 0; i < TerrainConfigMaster->LODs.Num(); ++i)
 	{
 		if (i == aLOD)

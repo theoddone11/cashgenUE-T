@@ -30,6 +30,8 @@ class CASHGEN_API ACGTile : public AActor
 	UMaterialInstanceDynamic* myWaterMaterialInstance;
 	UMaterial* Material;
 	TMap<uint8, ELODStatus> LODStatus;
+	
+	TArray<FTransform> MeshTransforms;
 
 	float LODTransitionOpacity = 0.0f;
 
@@ -54,9 +56,8 @@ class CASHGEN_API ACGTile : public AActor
 public:
 	ACGTile();
 	~ACGTile();
-
-public:
-	int32 GetNumMeshes() const;
+	int32 GetNumMeshTransforms() const;
+	void SetMeshTransforms(const TArray<FVector>& Vertices, const TArray<FVector>& Normals);
 	TArray<FTransform> GetMeshTransforms();
 	bool TickTransition(float DeltaSeconds);
 

@@ -62,7 +62,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CashGen")
 	UHierarchicalInstancedStaticMeshComponent* MyWaterMeshComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CashGen")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CashGen", Config = "")
 	FCGTerrainConfig myTerrainConfig;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "CashGen|Events")
