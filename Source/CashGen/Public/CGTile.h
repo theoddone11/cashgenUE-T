@@ -58,7 +58,7 @@ public:
 	~ACGTile();
 	int32 GetNumMeshTransforms() const;
 	void SetMeshTransforms(const TArray<FVector>& Vertices, const TArray<FVector>& Normals);
-	TArray<FTransform> GetMeshTransforms();
+	const TArray<FTransform>& GetMeshTransforms();
 	bool TickTransition(float DeltaSeconds);
 
 	virtual void BeginPlay() override;

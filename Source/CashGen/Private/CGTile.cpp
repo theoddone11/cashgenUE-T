@@ -48,11 +48,8 @@ void ACGTile::SetMeshTransforms(const TArray<FVector>& Vertices, const TArray<FV
 	}
 }
 
-TArray<FTransform> ACGTile::GetMeshTransforms(){
-	if (MeshTransforms.Num() > 0){
-		return MeshTransforms;
-	}
-	else return TArray<FTransform>();
+const TArray<FTransform>& ACGTile::GetMeshTransforms(){
+	return MeshTransforms;
 }
 
 bool ACGTile::TickTransition(float DeltaSeconds)
