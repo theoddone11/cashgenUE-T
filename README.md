@@ -1,3 +1,13 @@
+## NOTE ##
+
+I looked into updating this for use in UE 5.7 but realized the updates to Dynamic Mesh Component by Epic allow all of the same features with much more blueprint and pcg integration. 
+
+## END NOTE ##
+
+
+
+_______________________________________________________
+
 # cashgenUE
 Procedural Terrain Generator for UnrealEngine 4.25
 
