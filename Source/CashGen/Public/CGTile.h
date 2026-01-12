@@ -3,11 +3,13 @@
 #include "Cashgen/Public/Struct/CGIntVector2.h"
 
 #include <Runtime/Engine/Classes/Components/SphereComponent.h>
-#include "ProceduralMeshComponent.h"
-
+#include <Runtime/GeometryFramework/Public/Components/DynamicMeshComponent.h>  // Replace ProceduralMeshComponent
+#include <Runtime\GeometryCore\Public\DynamicMesh\DynamicMesh3.h>
 #include "CGTile.generated.h"
 
-class UStaticMeshComponent;
+using UE::Geometry::FDynamicMesh3;
+
+class UDynamicMeshComponent;class UStaticMeshComponent;
 struct FCGTerrainConfig;
 
 UENUM(BlueprintType)
@@ -23,7 +25,7 @@ class CASHGEN_API ACGTile : public AActor
 {
 	GENERATED_BODY()
 
-	TMap<uint8, UProceduralMeshComponent*> MeshComponents;
+	TMap<uint8, class UDynamicMeshComponent*> MeshComponents;
 	TMap<uint8, UMaterialInstanceDynamic*> MaterialInstances;
 	UStaticMeshComponent* MyWaterMeshComponent;
 	UMaterialInstance* MaterialInstance;

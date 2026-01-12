@@ -1,8 +1,6 @@
 #include "CashGen/Public/CGTerrainGeneratorWorker.h"
 #include "CashGen/Public/CGTile.h"
 
-#include "ProceduralMeshComponent.h"
-
 #include <UnrealFastNoisePlugin/Public/UFNNoiseGenerator.h>
 
 #include <chrono>

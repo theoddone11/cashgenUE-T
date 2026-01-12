@@ -7,7 +7,7 @@ public class CashGen : ModuleRules
 	public CashGen(ReadOnlyTargetRules Target) : base(Target)
     {
         
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RenderCore", "RHI", "UnrealFastNoisePlugin", "ProceduralMeshComponent" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RenderCore", "RHI", "UnrealFastNoisePlugin", "ProceduralMeshComponent", "GeometryFramework", "GeometryCore" });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
       
